@@ -1,3 +1,6 @@
+# application based ignored files
+server/config/keys.js
+
 .vscode
 
 # Logs

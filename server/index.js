@@ -1,5 +1,11 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const app = express();
+const keys = require("./config/keys"); // TODO: set to handle environment vars.
+
+mongoose.connect(keys.MONGODB_URL, () => {
+  console.log("===== mongodb connected =====");
+});
 
 app.get("/", (req, res) => {
   res.send({ name: "chamil udayanga" });
