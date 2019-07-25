@@ -1,9 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import Home from './Home';
 import Account from './Account';
 import Login from './Login';
+import Signup from './Signup';
 
 const App = () => {
     return (
@@ -14,6 +15,7 @@ const App = () => {
             <Route path="/" component={Login} exact></Route>
             <Route path="/home" component={Home}></Route>
             <Route path="/account" component={Account}></Route>
+            <Route path="/signup" component={Signup}></Route>
         </div>
     );
 };

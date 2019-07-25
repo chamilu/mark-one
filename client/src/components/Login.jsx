@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
 class Login extends Component {
     state = {
@@ -10,6 +11,10 @@ class Login extends Component {
     handleClick = () => {
         console.log(this.state);
         axios.post('/api/authenticate', this.state);
+    };
+
+    handleRegisterClick = () => {
+        this.props.history.push('/signup');
     };
 
     render() {
@@ -31,9 +36,10 @@ class Login extends Component {
                 />
                 <br />
                 <button onClick={this.handleClick}>Login</button>
+                <button onClick={this.handleRegisterClick}>Register</button>
             </div>
         );
     }
 }
 
-export default Login;
+export default withRouter(Login);
