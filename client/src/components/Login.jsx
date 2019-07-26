@@ -9,11 +9,10 @@ class Login extends Component {
     };
 
     handleClick = () => {
-        console.log(this.state);
         axios.post('/api/authenticate', this.state);
     };
 
-    handleRegisterClick = () => {
+    handleSignupClick = () => {
         this.props.history.push('/signup');
     };
 
@@ -36,7 +35,7 @@ class Login extends Component {
                 />
                 <br />
                 <button onClick={this.handleClick}>Login</button>
-                <button onClick={this.handleRegisterClick}>Register</button>
+                <button onClick={this.handleSignupClick}>Signup</button>
             </div>
         );
     }
