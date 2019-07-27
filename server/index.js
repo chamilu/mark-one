@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
 const app = express();
 const keys = require('./config/keys'); // TODO: set to handle environment vars.
 
@@ -20,22 +21,36 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/authenticate', (req, res) => {
-    // TODO: move this functionality to register api.
-    // this is just to test db connectivity and etc.
-    const User = mongoose.model('users');
-    const user = new User({
-        username: req.body.username,
-        password: req.body.password
-    }).save();
+    // TODO: add authenticate
+    // Load hash from your password DB.
+    // bcrypt.compare(myPlaintextPassword, hash, function(err, res) {
+    //     // res == true
+    // });
+    // bcrypt.compare(someOtherPlaintextPassword, hash, function(err, res) {
+    //     // res == false
+    // });
+    res.send({ api: 'authenticate' });
+});
 
-    user.then(
-        data => {
-            res.send({ name: 'chamil udayanga, this working', data });
-        },
-        err => {
-            res.send({ name: 'issue occured' });
-        }
-    );
+app.post('/api/user', (req, res) => {
+    const User = mongoose.model('users');
+    bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
+        const user = new User({
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            username: req.body.username,
+            password: hashedPassword
+        })
+            .save()
+            .then(
+                data =>
+                    res.send({
+                        status: 200,
+                        data: data
+                    }),
+                err => res.send(err)
+            );
+    });
 });
 
 const PORT = process.env.PORT || 5000;

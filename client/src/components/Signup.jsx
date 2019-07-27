@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 class Signup extends Component {
     // TODO: come up with better form validation.
@@ -18,8 +20,19 @@ class Signup extends Component {
             this.setState({ isFormError: true });
         } else {
             this.setState({ isFormError: false });
-
             // TODO: call backend api to save user data.
+            axios
+                .post('/api/user', {
+                    firstname: this.state.firstname,
+                    lastname: this.state.lastname,
+                    username: this.state.username,
+                    password: this.state.password
+                })
+                .then(result => {
+                    if (result.status === 200) {
+                        this.props.history.push('/login');
+                    }
+                });
         }
     };
 
@@ -68,4 +81,4 @@ class Signup extends Component {
     }
 }
 
-export default Signup;
+export default withRouter(Signup);
