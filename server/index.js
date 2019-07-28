@@ -21,15 +21,27 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/authenticate', (req, res) => {
-    // TODO: add authenticate
-    // Load hash from your password DB.
-    // bcrypt.compare(myPlaintextPassword, hash, function(err, res) {
-    //     // res == true
-    // });
-    // bcrypt.compare(someOtherPlaintextPassword, hash, function(err, res) {
-    //     // res == false
-    // });
-    res.send({ api: 'authenticate' });
+    // TODO: clean the code. user await.
+    const User = mongoose.model('users');
+
+    User.findOne({ username: req.body.username }, (err, matchedUser) => {
+        // BUG: Can't set headers after they are sent.
+        // info: related to matchedUser
+        if (matchedUser === null) {
+            res.send({ error: true, message: 'user not found.' });
+            return;
+        }
+        bcrypt.compare(
+            req.body.password,
+            matchedUser.password,
+            (err, result) => {
+                if (!result) {
+                    res.send({ error: true, message: 'password not matched.' });
+                }
+                res.send({ status: result });
+            }
+        );
+    });
 });
 
 app.post('/api/user', (req, res) => {
